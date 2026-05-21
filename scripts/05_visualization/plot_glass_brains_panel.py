@@ -22,7 +22,7 @@ DATASETS = [
     ("LSD", "LSD", "PLB", True, "A"),
     ("DMT", "DMT", "PLB", True, "B"),
     ("Anestesia", "Unconscious", "Awake", True, "C"),
-    ("Schizophrenia", "CTRL", "SCHZ", False, "D"),
+    ("Schizophrenia", "SCHZ", "CTRL", False, "D"),
     ("Modafinil", "MOD", "PLB", True, "E")
 ]
 
@@ -96,10 +96,24 @@ for ds_name, cond_a, cond_b, is_paired, letter in DATASETS:
     map_name = "Schiz" if ds_name == "Schizophrenia" else ds_name
     nib.save(sdi_img, os.path.join(map_out_dir, f"map_{map_name}_{metric}.nii.gz"))
     
-    vm = max(np.abs(delta_se)) if len(delta_se) > 0 else 0.05
-    if vm < 0.02: vm = 0.02
-    dataset_vmax[ds_name] = vm
-    print(f"{ds_name}: vmax={vm:.4f}, values={np.round(delta_se, 4)}")
+    # Set user-approved limits for dSW
+    if metric == "dSW":
+        limits = {
+            "LSD": (-0.060, 0.060),
+            "DMT": (-0.033, 0.003),
+            "Anestesia": (-0.054, 0.054),
+            "Schizophrenia": (-0.092, -0.010),
+            "Modafinil": (-0.045, 0.065)
+        }
+        vmin, vmax = limits[ds_name]
+    else:
+        vmin = np.min(delta_se) if len(delta_se) > 0 else -0.05
+        vmax = np.max(delta_se) if len(delta_se) > 0 else 0.05
+        if abs(vmin) < 0.02 and abs(vmax) < 0.02:
+            vmin, vmax = -0.02, 0.02
+        
+    dataset_vmax[ds_name] = (vmin, vmax)
+    print(f"{ds_name}: vmin={vmin:.4f}, vmax={vmax:.4f}, values={np.round(delta_se, 4)}")
  
 fig = plt.figure(figsize=(28, 10))
 # Grid: 3 rows (Brains Top, Brains Bottom, Colorbars) x 5 columns
@@ -115,19 +129,21 @@ for i, (ds_name, cond_a, cond_b, is_paired, letter) in enumerate(DATASETS):
         continue
     
     img = dataset_images[ds_name]
-    vmax = dataset_vmax[ds_name]
+    vmin, vmax = dataset_vmax[ds_name]
     
     plotting.plot_glass_brain(img, display_mode='l', axes=axes_l[i],
-                               cmap='RdBu_r', vmin=-vmax, vmax=vmax, plot_abs=False, colorbar=False)
+                               cmap='RdBu_r', vmin=vmin, vmax=vmax, plot_abs=False, colorbar=False)
                               
     plotting.plot_glass_brain(img, display_mode='z', axes=axes_z[i],
-                               cmap='RdBu_r', vmin=-vmax, vmax=vmax, plot_abs=False, colorbar=False)
+                               cmap='RdBu_r', vmin=vmin, vmax=vmax, plot_abs=False, colorbar=False)
  
     # Individual Colorbar
-    norm = mpl.colors.Normalize(vmin=-vmax, vmax=vmax)
+    norm = mpl.colors.Normalize(vmin=vmin, vmax=vmax)
     cb = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap='RdBu_r'),
                  cax=axes_cb[i], orientation='horizontal')
     cb.ax.tick_params(labelsize=10)
+    cb.set_ticks([vmin, vmax])
+    cb.ax.set_xticklabels([f"[{vmin:.3f}", f"{vmax:.3f}]"])
     cb.set_label(f'ΔSE {metric}', fontsize=12, fontweight='bold', labelpad=5)
     
     # Dataset Label
