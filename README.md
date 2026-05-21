@@ -14,7 +14,7 @@ This repository contains the processing scripts and processed datasets to reprod
 * **`scripts/`**:
   * **`01_parcelling/`**: Extraction of regional BOLD time-series from fMRI data. Contains the standardized script `run_parcelling.m` (with configuration options at the top), helper function `bold_to_networks.m`, and atlas templates (`1000_Schaefer.nii`, `AAL.nii`, and `Tian_Schaefer_combinada.nii`). Requires SPM12.
   * **`02_correlations/`**: Functional connectivity correlation matrix computation. Contains `run_correlations.m`.
-  * **`03_graph_analysis/`**: Dynamic Small-World Propensity and Leave-One-Network-Out (LONO) calculation. Contains `run_sliding_window_LONO.m`.
+  * **`03_graph_analysis/`**: Dynamic Small-World Propensity and Functional Connectivity calculation. Contains `run_dynamic_metrics.m` (for global network measures) and `run_sliding_window_LONO.m` (for Leave-One-Network-Out driver analysis).
   * **`04_statistics/`**: Linear mixed-effects (LME) models, Wald tests, and LONO group-level stats (Python / R).
     * `final_mixed_models_stats.ipynb`: Interactive Jupyter Notebook to step through the global LME models for dSW and dFC.
   * **`05_visualization/`**: Generates the main manuscript figures (Glass Brains, Raincloud Plots, and composite figures) (Python).
