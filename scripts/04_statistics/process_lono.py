@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 from scipy import stats
+from statsmodels.stats.multitest import fdrcorrection
 import warnings
 import os
 
@@ -23,7 +24,7 @@ DATASETS = [
     ("DMT",          "DMT",          "DMT",          "PLB",   True,  "#e67e22"),
     ("Anesthesia (U)", "Anestesia", "Unconscious",  "Awake", True,  "#8e44ad"),
     ("Anesthesia (S)", "Anestesia", "Sedation",     "Awake", True,  "#9b59b6"),
-    ("Schizophrenia", "Schiz",      "SCHZ",         "CTRL",  False, "#2c3e50"),
+    ("Schizophrenia", "Schiz",      "CTRL",         "SCHZ",  False, "#2c3e50"),
     ("Modafinil",     "Modafinil",  "MOD",          "PLB",   True,  "#27ae60"),
 ]
 
@@ -48,15 +49,9 @@ PATHS_DFC = {
 # --- Statistics Functions ---
 
 def fdr_bh(ps):
-    """Benjamini-Hochberg FDR correction."""
-    ps = np.array(ps)
-    n = len(ps)
-    order = np.argsort(ps)
-    p_adj = np.empty(n)
-    for rank, idx in enumerate(order):
-        p_adj[idx] = min(1.0, ps[idx] * n / (rank + 1))
-    for i in range(n - 2, -1, -1):
-        p_adj[order[i]] = min(p_adj[order[i]], p_adj[order[i + 1]])
+    """Benjamini-Hochberg FDR correction using statsmodels."""
+    if len(ps) == 0: return np.array([])
+    _, p_adj = fdrcorrection(ps, alpha=0.05, method='indep')
     return p_adj
 
 def rank_biserial_wilcoxon(d):

@@ -22,7 +22,7 @@ DATASETS = [
     ("LSD", "LSD", "PLB", True, "A"),
     ("DMT", "DMT", "PLB", True, "B"),
     ("Anestesia", "Unconscious", "Awake", True, "C"),
-    ("Schizophrenia", "SCHZ", "CTRL", False, "D"),
+    ("Schizophrenia", "CTRL", "SCHZ", False, "D"),
     ("Modafinil", "MOD", "PLB", True, "E")
 ]
 
