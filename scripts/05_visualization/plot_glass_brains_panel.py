@@ -19,11 +19,11 @@ NETWORKS = ["Visual", "Somatomotor", "DorsalAttn", "SalVentAttn", "Limbic", "Fro
 NET_SHORT = ["Vis", "SomMot", "DorsAttn", "SalVentAttn", "Limbic", "Cont", "Default"]
 
 DATASETS = [
-    ("LSD", "LSD", "PLB", True, "A"),
-    ("DMT", "DMT", "PLB", True, "B"),
-    ("Anestesia", "Unconscious", "Awake", True, "C"),
-    ("Schizophrenia", "SCHZ", "CTRL", False, "D"),
-    ("Modafinil", "MOD", "PLB", True, "E")
+    ("Anaesthesia", "Unconscious", "Awake", True, "A"),
+    ("Modafinil", "MOD", "PLB", True, "B"),
+    ("LSD", "LSD", "PLB", True, "C"),
+    ("DMT", "DMT", "PLB", True, "D"),
+    ("Schizophrenia", "SCHZ", "CTRL", False, "E")
 ]
 
 metric = sys.argv[1] if len(sys.argv) > 1 else "dSW"
@@ -101,7 +101,7 @@ for ds_name, cond_a, cond_b, is_paired, letter in DATASETS:
         limits = {
             "LSD": (-0.060, 0.060),
             "DMT": (-0.033, 0.003),
-            "Anestesia": (-0.054, 0.054),
+            "Anaesthesia": (-0.054, 0.054),
             "Schizophrenia": (-0.092, -0.010),
             "Modafinil": (-0.045, 0.065)
         }
@@ -147,7 +147,7 @@ for i, (ds_name, cond_a, cond_b, is_paired, letter) in enumerate(DATASETS):
     cb.set_label(f'ΔSE {metric}', fontsize=12, fontweight='bold', labelpad=5)
     
     # Dataset Label
-    axes_l[i].set_title(f"{letter}  {ds_name}", fontsize=18, fontweight='bold', pad=10)
+    axes_l[i].set_title(f"{ds_name}", fontsize=18, fontweight='bold', pad=10)
  
 fig.suptitle(f"Network Driver Impact (ΔSE {metric}) — Individual Dataset Scaling", fontsize=22, fontweight='bold', y=1.02)
  
