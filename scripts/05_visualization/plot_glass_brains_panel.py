@@ -59,9 +59,7 @@ for ds_name, cond_a, cond_b, is_paired, letter in DATASETS:
     df["subject"] = ["_".join(p[:2]) for p in parts]
     df["condition"] = ["_".join(p[2:]) for p in parts]
     
-    EXCLUSIONS = ["Sub_1", "Sub_6", "Sub_7", "Sub_12", "Sub_14", "Sub_18"]
-    if ds_name == "DMT":
-        df = df[~df["subject"].isin(EXCLUSIONS)]
+    # No exclusions to match the interactive_plot.py summary CSV behavior
     
     for net in NETWORKS:
         df[f"SDI_{net}"] = df["Complete"] - df[net]
