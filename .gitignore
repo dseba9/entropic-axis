@@ -1,0 +1,24 @@
+# Checkpoints de Python / Jupyter
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints
+.venv/
+venv/
+env/
+
+# Archivos de MATLAB / Temporales
+*.asv
+*.m~
+.DS_Store
+Thumbs.db
+*.log
+execution_log_*.txt
+
+# Exclusión de datos crudos pesados fMRI (NIfTI)
+*.nii.gz
+!scripts/01_parcelling/masks/1000_Schaefer/1000_Schaefer.nii
+
+# Archivos de salida intermedios y reportes pesados
+results/LONO/*.png
+results/aal_contrasts_results.xlsx
