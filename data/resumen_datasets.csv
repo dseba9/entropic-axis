@@ -1,0 +1,6 @@
+dataset,N,age range,scanner,TR,scan duration,reference*
+LSD,20,30.5 ± 8.0,3 T GE HDx,2.0,14.0,Carhart-Harris et al. 2016 PNAS
+DMT,14,33.5 ± 7.9,3 T Siemens Verio,2.0,28.0,Timmermann et al. 2019
+Modafinil,24,25-35,3 T Philips Achieva,1.67,12.1,Cera et al. 2014 PLoS ONE
+Propofol,17,18-40,3 T Siemens,2.0,8.5,Coppola et al. 2022 NeuroImage
+Schz (UCLA),100,34.4 ± 9.2,3 T Siemens Trio,2.0,5.1,Poldrack et al. 2016
